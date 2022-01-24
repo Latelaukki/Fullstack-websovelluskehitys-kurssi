@@ -1,3 +1,3 @@
 # Fullstack-websovelluskehitys-kurssi 2022
 
-Helsingin yliopiston Fullstack-websovelluskurssin tehtävien palautusrepositorio.
+Helsingin yliopiston kevään 2022 Fullstack-websovelluskurssin tehtävien palautusrepositorio.
