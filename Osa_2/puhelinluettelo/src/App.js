@@ -36,39 +36,62 @@ const addPerson = (event) => {
     }
   })
 
-  if (isNewName) {
-    personService
-      .create(personObject)
-      .then(returnedPerson => {
-        setPersons(persons.concat(returnedPerson))
-      })
-    setIsError(false)
-    setNotificationMessage(
-      `Added ${newName}`
-    )
-    setTimeout(() => {
-      setNotificationMessage(null)
-    }, 3000)
+  if (isNewName) {  
+  personService
+    .create(personObject)
+    .then(returnedPerson => {
+      setPersons(persons.concat(returnedPerson))
+      setIsError(false)
+      setNotificationMessage(
+        `Added ${newName}`
+      )
+    })
+    .catch(error => {
+      setIsError(true)
+      setNotificationMessage(
+        error.response.data.error
+      )
+    })
   } else {
-    setIsError(true)
-    setNotificationMessage(
-      `${newName} is already added to phonebook`
-    )
+    if (window.confirm(`${newName} is already added to phonebook, replace the old number with a new one?`)) {
+    const personToUpdate = persons.find(person => person.name === newName)
+    const id = personToUpdate.id
+    personService
+      .update(id, personObject)
+      .then(returnedPerson => {
+        setPersons(persons.map(person => person.id !== id ? person : returnedPerson))
+        setIsError(false)
+        setNotificationMessage(
+          `${newName} number updated to ${newNumber}` 
+        )
+      })
+      .catch(error => {
+        setIsError(true)
+        setNotificationMessage(
+          error.response.data.error
+        )
+      })
+    }
+  }
     setTimeout(() => {
       setNotificationMessage(null)
     }, 3000)
-  }
   setNewName('')
   setNewNumber('')
 }
 
 const removePerson = (event) => {
-  const personToDelete= persons.find(person => person.name === event.target.value)
+  const personToDelete = persons.find(person => person.name === event.target.value)
+  const id = personToDelete.id
     if (window.confirm(`Delete ${personToDelete.name}?`)) {
     personService
-      .remove(personToDelete.id)
+      .remove(id)
       .then(returnedPerson => {
         setPersons(persons.filter(person => person.id !== persons.indexOf(returnedPerson)))
+        setIsError(false)
+        setNotificationMessage(
+          `${personToDelete.name} deleted`
+        )
       })
       .catch(error => {
         setIsError(true)
@@ -79,10 +102,6 @@ const removePerson = (event) => {
           setNotificationMessage(null)
         }, 3000)
       })
-    setIsError(false)
-    setNotificationMessage(
-      `${personToDelete.name} deleted`
-    )
     setTimeout(() => {
       setNotificationMessage(null)
     }, 3000)

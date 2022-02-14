@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import countryService from 'Countries'
+import countryService from './Countries'
 
 const Country = ({ inputString, handleSearch}) => {
   return (
@@ -13,15 +13,26 @@ const Country = ({ inputString, handleSearch}) => {
   )
 }
 
+const CountryList = ({ countriesToShow}) => {
+  return (
+    <div> 
+      {countriesToShow.map(country =>
+        <p key={country.name.common}> {country.name.common} </p>
+      )}
+    </div>
+  )
+}
+
 const App = () => {
-  const [inputString, setInputString] = useState['']
+  const [countries, setCountries] = useState([])
+  const [inputString, setInputString] = useState('')
   const [selectedCountry, setSelectedCountry] = useState('')
 
   useEffect(() => {
     countryService
       .getAll()
-      .then(initialPersons => {
-        setPersons(initialPersons)
+      .then(initialCountries => {
+        setCountries(initialCountries)
       })
   }, [])  
 
@@ -29,11 +40,16 @@ const App = () => {
     setInputString(event.target.value)
   }
 
+  const countriesToShow = countries.filter(country => country.name.common.toLowerCase().includes(inputString.toLowerCase()))
+
   return (
     <div>
-      <Country 
-        inputString={inputString}
-        handleSearch={handleSearch}/>
+      filter shown with
+      <input
+        value={inputString}
+        onChange={handleSearch}
+      />
+      <CountryList countries={countriesToShow}/>
     </div>
   )
 }
