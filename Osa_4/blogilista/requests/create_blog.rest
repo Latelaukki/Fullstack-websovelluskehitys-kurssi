@@ -1,9 +1,9 @@
 POST http://localhost:3003/api/blogs
 Content-Type: application/json
-Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVJ9.eyJ1c2VybmFtZSI6IkxhdXJpIEFhbHRvbmVuIiwiaWQiOiI2MjExMzQzYWJmNDRhYzJkOWRjNGEyZTkiLCJpYXQiOjE2NDUzMDQ1NzV9.3l0pTWnjDl2w00f9W-NyPrSFzjdrUBCUHSxU0LmKZgg
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IkxhdXJpIEFhbHRvbmVuIiwiaWQiOiI2MjExMzQzYWJmNDRhYzJkOWRjNGEyZTkiLCJpYXQiOjE2NDUzMDQ1NzV9.3l0pTWnjDl2w00f9W-NyPrSFzjdrUBCUHSxU0LmKZgg
 
 {
-  "title": "Harry Potter 7",
+  "title": "Harry Potter 9",
   "author": "Jk Rowling",
   "url": "www.harrypotter.fi",
   "likes": "123"

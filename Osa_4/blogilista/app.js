@@ -3,7 +3,7 @@ const express = require('express')
 const app = express()
 require('express-async-errors')
 const cors = require('cors')
-const notesRouter = require('./controllers/blogs')
+const blogsRouter = require('./controllers/blogs')
 const usersRouter = require('./controllers/users')
 const loginRouter = require('./controllers/login')
 const middleware = require('./utils/middleware')
@@ -26,7 +26,7 @@ app.use(middleware.requestLogger)
 
 app.use(middleware.tokenExtractor)
 
-app.use('/api/blogs', notesRouter)
+app.use('/api/blogs', middleware.userExtractor, blogsRouter)
 app.use('/api/users', usersRouter)
 app.use('/api/login', loginRouter)
 
