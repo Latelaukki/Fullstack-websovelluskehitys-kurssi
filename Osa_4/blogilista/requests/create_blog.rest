@@ -1,6 +1,6 @@
 POST http://localhost:3003/api/blogs
 Content-Type: application/json
-
+Authorization: bearer eyJhbGciOiJIUzI1DDUf9W-NyPrSFzjdrUBCUHSxU0LmKZgg
 
 {
   "title": "Harry Potter 9",
