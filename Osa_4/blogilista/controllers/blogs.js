@@ -6,13 +6,13 @@ const User = require('../models/user')
 
 router.get('/', async (request, response) => {
   const notes = await Blog
-    .find({})
     .find({}).populate('user', { username: 1, name: 1 })
 
   response.json(notes)
 })
 
 router.post('/', async (request, response) => {
+  console.log('meni')
   if (!request.user) {
     return response.status(401).json({ error: 'token missing or invalid' })
   }
