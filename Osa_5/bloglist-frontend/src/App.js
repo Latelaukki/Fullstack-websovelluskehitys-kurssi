@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import blogService from './services/blogs'
 import loginService from './services/login'
 
@@ -6,6 +6,7 @@ import LoginForm from './components/LoginForm'
 import Notification from './components/Notification'
 import BlogList from './components/BlogList'
 import NewBlogForm from './components/NewBlogForm'
+import Togglable from './components/Togglable'
 
 const App = () => {
   const [blogs, setBlogs] = useState([])
@@ -13,9 +14,8 @@ const App = () => {
   const [password, setPassword] = useState('')
   const [user, setUser] = useState(null)
   const [message, setMessage] = useState(null)
-  const [newTitle, setNewTitle] = useState('')
-  const [newAuthor, setNewAuthor] = useState('')
-  const [newUrl, setNewUrl] = useState('')
+
+  const blogFormRef = useRef()
 
   useEffect(() => {
     blogService.getAll().then(blogs =>
@@ -32,14 +32,8 @@ const App = () => {
     }
   }, [])
 
-  const createNewBlog = (event) => {
-    event.preventDefault()
-    const blogObject = {
-      title: newTitle,
-      author: newAuthor,
-      url: newUrl
-    }
-
+  const addBlog = (blogObject) => {
+    blogFormRef.current.toggleVisibility()
     blogService
       .create(blogObject)
       .then(returnedBlog => {
@@ -49,9 +43,34 @@ const App = () => {
       .catch(error => {
         handleNotification(error.response.data.error, 'error')
       })
-      setNewTitle('')
-      setNewAuthor('')
-      setNewUrl('')  
+  }
+
+  const createNewLike = (blogObject) => {
+    const blogToUpdate = blogs.find(blog => blog.title === blogObject.title)
+    const id = blogToUpdate.id
+    blogService
+      .update(id, blogObject)
+      .then(returnedBlog => {
+        setBlogs(blogs.map(blog => blog.id !== id ? blog : returnedBlog))
+      })
+      .catch(error => {
+        handleNotification(error.response.data.error, 'error')
+      })
+  }
+
+  const removeBlog = (event) => {
+    const blogToDelete = blogs.find(blog => blog.title === event.target.value)
+    if (window.confirm(`Remove ${blogToDelete.title} by ${blogToDelete.author}?`)) {
+      blogService
+        .remove(blogToDelete.id)
+        .then(returnedBlog => {
+          setBlogs(blogs.filter(blog => blog.id !== blogs.indexOf(returnedBlog)))
+          handleNotification(`${blogToDelete.title} deleted`)
+        })
+        .catch(error => {
+          handleNotification(error.response.data.error, 'error')
+        })
+    }
   }
 
   const handleLogin = async (event) => {
@@ -68,6 +87,8 @@ const App = () => {
       setUser(user)
       setUsername('')
       setPassword('')
+      console.log('4.')
+      console.log(user)
     } catch (exception) {
       handleNotification('Wrong username or password', 'error')
     }
@@ -106,18 +127,19 @@ const App = () => {
       <Notification message={message} />
       {user.username} is logged in <button onClick={handleLogOut}>logout</button>
       <p />
-      <h2>create new</h2>
-      <NewBlogForm
-        newTitle={newTitle}
-        newAuthor={newAuthor}
-        newurl={newUrl}
-        handleTitleChange={({ target }) => setNewTitle(target.value)}
-        handleAuthorChange={({ target }) => setNewAuthor(target.value)}
-        handleUrlChange={({ target }) => setNewUrl(target.value)}
-        handleSubmit={createNewBlog}
-      />
+      <Togglable label="new blog" ref={blogFormRef}>
+        <NewBlogForm
+          createNewBlog={addBlog}
+          blogFormRef={blogFormRef}
+        />
+      </Togglable>
       <p />
-      <BlogList blogs={blogs} />
+      <BlogList
+        blogs={blogs}
+        createNewLike={createNewLike}
+        removeBlog={removeBlog}
+        user={user}
+      />
     </div>
   )
 }

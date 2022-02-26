@@ -5,14 +5,13 @@ const Blog = require('../models/blog')
 const User = require('../models/user')
 
 router.get('/', async (request, response) => {
-  const notes = await Blog
+  const blogs = await Blog
     .find({}).populate('user', { username: 1, name: 1 })
 
-  response.json(notes)
+  response.json(blogs)
 })
 
 router.post('/', async (request, response) => {
-  console.log('meni')
   if (!request.user) {
     return response.status(401).json({ error: 'token missing or invalid' })
   }
@@ -28,7 +27,28 @@ router.post('/', async (request, response) => {
   response.status(201).json(savedBlog)
 })
 
-router.delete('/:id', async (request, response) => {
+router.put('/:id', async (request, response) => {
+  const body = request.body
+
+  const blog = {
+    title: body.title,
+    author: body.author,
+    url: body.url,
+    likes: body.likes,
+    user: body.userId
+  }
+
+  const updatedBlog = await Blog
+    .findByIdAndUpdate(
+      request.params.id, 
+      blog, 
+      { new: true, runValidators: true, context: 'query' }
+    )
+      
+  response.json(updatedBlog)
+})
+
+router.delete('/:id', async (request, response) => { 
   const blogToDelete = await Blog.findById(request.params.id)
   if (!blogToDelete ) {
     return response.status(204).end()
@@ -43,19 +63,6 @@ router.delete('/:id', async (request, response) => {
   await Blog.findByIdAndRemove(request.params.id)
 
   response.status(204).end()
-})
-
-router.put('/:id', async (request, response) => {
-  const blog = request.body
-
-  const updatedBlog = await Blog
-    .findByIdAndUpdate(
-      request.params.id, 
-      blog, 
-      { new: true, runValidators: true, context: 'query' }
-    )
-      
-  response.json(updatedBlog)
 })
 
 module.exports = router

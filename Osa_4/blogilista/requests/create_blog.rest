@@ -1,6 +1,5 @@
 POST http://localhost:3003/api/blogs
 Content-Type: application/json
-Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Ik1hdHRpIFZpcnRhbmVuIiwiaWQiOiI2MjE0YzllNzM4NjBlM2NiOWYzYTg3ZDAiLCJpYXQiOjE2NDU1MzU0NTd9.Zxx5BTtQm5JjlCxwC7K9b0h9CDNXP9PTg3VHCO-Wq_A
 
 {
   "title": "Harry Potter 2",
