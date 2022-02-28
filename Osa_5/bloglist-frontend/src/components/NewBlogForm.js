@@ -18,7 +18,7 @@ const NewBlogForm = ({ createNewBlog }) => {
   }
 
   return (
-    <div>
+    <div data-testid='blog-form'>
       <h2>create new</h2>
       <form onSubmit={addBlog}>
         <div>
@@ -28,6 +28,7 @@ const NewBlogForm = ({ createNewBlog }) => {
             value={newTitle}
             name="title"
             onChange={({ target }) => setNewTitle(target.value)}
+            id="title"
           />
         </div>
         <div>
@@ -37,6 +38,7 @@ const NewBlogForm = ({ createNewBlog }) => {
             value={newAuthor}
             name="author"
             onChange={({ target }) => setNewAuthor(target.value)}
+            id="author"
           />
         </div>
         <div>
@@ -46,9 +48,10 @@ const NewBlogForm = ({ createNewBlog }) => {
             value={newUrl}
             name="url"
             onChange={({ target }) => setNewUrl(target.value)}
+            id="url"
           />
         </div>
-        <button type="submit">create</button>
+        <button type="submit" id="create-button">create</button>
       </form>
     </div>
   )

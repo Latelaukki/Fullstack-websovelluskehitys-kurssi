@@ -18,6 +18,7 @@ router.post('/', async (request, response) => {
 
   const user = request.user
   const blog = new Blog({ ...request.body, user: user.id })
+  blog.populate('user', { username: 1, name: 1 })
 
   const savedBlog = await blog.save()
 
@@ -29,13 +30,14 @@ router.post('/', async (request, response) => {
 
 router.put('/:id', async (request, response) => {
   const body = request.body
+  const user = User.findById(body.userId)
 
   const blog = {
     title: body.title,
     author: body.author,
     url: body.url,
     likes: body.likes,
-    user: body.userId
+    user: user._id
   }
 
   const updatedBlog = await Blog
@@ -44,6 +46,7 @@ router.put('/:id', async (request, response) => {
       blog, 
       { new: true, runValidators: true, context: 'query' }
     )
+    .populate('user', { username: 1, name: 1 })
       
   response.json(updatedBlog)
 })

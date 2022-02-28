@@ -38,7 +38,7 @@ const App = () => {
       .create(blogObject)
       .then(returnedBlog => {
         setBlogs(blogs.concat(returnedBlog))
-        handleNotification(`${returnedBlog.title} added`, 'success')
+        handleNotification(`${returnedBlog.title} by ${returnedBlog.author} added`, 'success')
       })
       .catch(error => {
         handleNotification(error.response.data.error, 'error')
@@ -65,7 +65,7 @@ const App = () => {
         .remove(blogToDelete.id)
         .then(returnedBlog => {
           setBlogs(blogs.filter(blog => blog.id !== blogs.indexOf(returnedBlog)))
-          handleNotification(`${blogToDelete.title} deleted`)
+          handleNotification(`${blogToDelete.title} deleted`, 'success')
         })
         .catch(error => {
           handleNotification(error.response.data.error, 'error')
@@ -125,7 +125,7 @@ const App = () => {
     <div>
       <h2>blogs</h2>
       <Notification message={message} />
-      {user.username} is logged in <button onClick={handleLogOut}>logout</button>
+      {user.name} is logged in <button onClick={handleLogOut}>logout</button>
       <p />
       <Togglable label="new blog" ref={blogFormRef}>
         <NewBlogForm

@@ -7,7 +7,7 @@ const BlogList = ({ blogs, createNewLike, removeBlog, user }) => {
     blogs: PropTypes.array.isRequired,
     createNewLike: PropTypes.func.isRequired,
     removeBlog: PropTypes.func.isRequired,
-    user: PropTypes.func.isRequired
+    user: PropTypes.object.isRequired
   }
 
   blogs = blogs.sort((blog1, blog2) => blog2.likes - blog1.likes)
