@@ -1,0 +1,15 @@
+PUT http://localhost:3003/api/blogs/62137fa7144fa633e6d0557b
+Content-Type: application/json
+
+{
+  "title": "Harry Potter 1",
+  "author": "Jk Rowling",
+  "url": "www.harrypotter.fi",
+  "likes": "25",
+  "user": {
+    "username": "Matti Virtanen",
+    "name": "Matti",
+    "_id:": "6214c9e73860e3cb9f3a87d0"
+  }
+}
+
