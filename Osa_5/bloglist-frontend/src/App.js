@@ -18,9 +18,7 @@ const App = () => {
   const blogFormRef = useRef()
 
   useEffect(() => {
-    blogService.getAll().then(blogs =>
-      setBlogs(blogs)
-    )
+    blogService.getAll().then((blogs) => setBlogs(blogs))
   }, [])
 
   useEffect(() => {
@@ -36,38 +34,45 @@ const App = () => {
     blogFormRef.current.toggleVisibility()
     blogService
       .create(blogObject)
-      .then(returnedBlog => {
+      .then((returnedBlog) => {
         setBlogs(blogs.concat(returnedBlog))
-        handleNotification(`${returnedBlog.title} by ${returnedBlog.author} added`, 'success')
+        handleNotification(
+          `${returnedBlog.title} by ${returnedBlog.author} added`,
+          'success'
+        )
       })
-      .catch(error => {
+      .catch((error) => {
         handleNotification(error.response.data.error, 'error')
       })
   }
 
   const createNewLike = (blogObject) => {
-    const blogToUpdate = blogs.find(blog => blog.title === blogObject.title)
+    const blogToUpdate = blogs.find((blog) => blog.title === blogObject.title)
     const id = blogToUpdate.id
     blogService
       .update(id, blogObject)
-      .then(returnedBlog => {
-        setBlogs(blogs.map(blog => blog.id !== id ? blog : returnedBlog))
+      .then((returnedBlog) => {
+        setBlogs(blogs.map((blog) => (blog.id !== id ? blog : returnedBlog)))
       })
-      .catch(error => {
+      .catch((error) => {
         handleNotification(error.response.data.error, 'error')
       })
   }
 
   const removeBlog = (event) => {
-    const blogToDelete = blogs.find(blog => blog.title === event.target.value)
-    if (window.confirm(`Remove ${blogToDelete.title} by ${blogToDelete.author}?`)) {
+    const blogToDelete = blogs.find((blog) => blog.title === event.target.value)
+    if (
+      window.confirm(`Remove ${blogToDelete.title} by ${blogToDelete.author}?`)
+    ) {
       blogService
         .remove(blogToDelete.id)
-        .then(returnedBlog => {
-          setBlogs(blogs.filter(blog => blog.id !== blogs.indexOf(returnedBlog)))
+        .then((returnedBlog) => {
+          setBlogs(
+            blogs.filter((blog) => blog.id !== blogs.indexOf(returnedBlog))
+          )
           handleNotification(`${blogToDelete.title} deleted`, 'success')
         })
-        .catch(error => {
+        .catch((error) => {
           handleNotification(error.response.data.error, 'error')
         })
     }
@@ -78,11 +83,10 @@ const App = () => {
 
     try {
       const user = await loginService.login({
-        username, password,
+        username,
+        password,
       })
-      window.localStorage.setItem(
-        'loggedBlogAppUser', JSON.stringify(user)
-      )
+      window.localStorage.setItem('loggedBlogAppUser', JSON.stringify(user))
       blogService.setToken(user.token)
       setUser(user)
       setUsername('')
@@ -128,10 +132,7 @@ const App = () => {
       {user.name} is logged in <button onClick={handleLogOut}>logout</button>
       <p />
       <Togglable label="new blog" ref={blogFormRef}>
-        <NewBlogForm
-          createNewBlog={addBlog}
-          blogFormRef={blogFormRef}
-        />
+        <NewBlogForm createNewBlog={addBlog} blogFormRef={blogFormRef} />
       </Togglable>
       <p />
       <BlogList

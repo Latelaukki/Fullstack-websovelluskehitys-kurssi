@@ -9,10 +9,12 @@ const Blog = ({ blog, createNewLike, removeBlog, user }) => {
     paddingLeft: 2,
     border: 'solid',
     borderWidth: 1,
-    marginBottom: 5
+    marginBottom: 5,
   }
 
-  const showIfUser = { display: user.username === blog.user.username ? '' : 'none' }
+  const showIfUser = {
+    display: user.username === blog.user.username ? '' : 'none',
+  }
 
   const changeView = () => {
     setShowInfo(!showInfo)
@@ -25,24 +27,29 @@ const Blog = ({ blog, createNewLike, removeBlog, user }) => {
       title: blog.title,
       author: blog.author,
       url: blog.url,
-      likes : blog.likes + 1
+      likes: blog.likes + 1,
     })
   }
 
-  return(
-    <div style={blogStyle} data-testid='blog'>
-      {blog.title} {blog.author}<button onClick={changeView} id="info-button">{label}</button>
-      {showInfo &&
+  return (
+    <div style={blogStyle} data-testid="blog">
+      {blog.title} {blog.author}
+      <button onClick={changeView} id="info-button">
+        {label}
+      </button>
+      {showInfo && (
         <div>
           {blog.url}
-          <br/>
+          <br />
           likes: {blog.likes} <button onClick={() => addLike()}>like</button>
-          <br/>
+          <br />
           {blog.user.name}
-          <br/>
-          <button onClick={removeBlog} value={blog.title} style={showIfUser}>remove</button>
+          <br />
+          <button onClick={removeBlog} value={blog.title} style={showIfUser}>
+            remove
+          </button>
         </div>
-      }
+      )}
     </div>
   )
 }

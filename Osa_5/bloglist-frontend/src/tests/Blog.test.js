@@ -8,7 +8,7 @@ import NewBlogForm from '../components/NewBlogForm'
 const user = {
   username: 'TestUser',
   password: 'testisalasana',
-  name: 'Testinimi'
+  name: 'Testinimi',
 }
 
 const blog = {
@@ -16,13 +16,11 @@ const blog = {
   author: 'Testikirjoittaja',
   url: 'www.testiurl.fi',
   likes: '2',
-  user: user
+  user: user,
 }
 
 describe('On default, Blog component', () => {
-
   test('renders title and author', () => {
-
     render(<Blog blog={blog} user={user} />)
 
     const element = screen.getByTestId('blog')
@@ -41,9 +39,7 @@ describe('On default, Blog component', () => {
 })
 
 describe('When view button is pressed on, Blog component', () => {
-
   test('renders title, author, url, likes and user', () => {
-
     render(<Blog blog={blog} user={user} />)
 
     const button = screen.getByText('view')
@@ -59,7 +55,6 @@ describe('When view button is pressed on, Blog component', () => {
   })
 
   test('shows like button which calls event handler 2 times when pressed 2 times', () => {
-
     const mockHandler = jest.fn()
 
     render(<Blog blog={blog} user={user} createNewLike={mockHandler} />)

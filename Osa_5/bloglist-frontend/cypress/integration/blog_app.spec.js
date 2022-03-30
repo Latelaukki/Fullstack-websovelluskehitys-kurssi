@@ -1,28 +1,28 @@
-describe('Blog app', function() {
-  beforeEach(function() {
+describe('Blog app', function () {
+  beforeEach(function () {
     cy.request('POST', 'http://localhost:3003/api/testing/reset')
     const user = {
       name: 'TestUser',
       username: 'Tester',
-      password: 'hyvinmonimutkainenjavaikeasalasana'
+      password: 'hyvinmonimutkainenjavaikeasalasana',
     }
     cy.request('POST', 'http://localhost:3003/api/users/', user)
     cy.visit('http://localhost:3000')
   })
 
-  it('Login form is shown', function() {
+  it('Login form is shown', function () {
     cy.contains('log in to application')
   })
 
-  describe('Login',function() {
-    it('succeeds with correct credentials', function() {
+  describe('Login', function () {
+    it('succeeds with correct credentials', function () {
       cy.get('#username').type('Tester')
       cy.get('#password').type('hyvinmonimutkainenjavaikeasalasana')
       cy.get('#login-button').click()
       cy.contains('TestUser is logged in')
     })
 
-    it('fails with wrong credentials', function() {
+    it('fails with wrong credentials', function () {
       cy.get('#username').type('Tester')
       cy.get('#password').type('hyvinhelppojayksinkertainensalasana')
       cy.get('#login-button').click()
@@ -30,12 +30,15 @@ describe('Blog app', function() {
     })
   })
 
-  describe('When logged in', function() {
-    beforeEach(function() {
-      cy.login({ username: 'Tester', password: 'hyvinmonimutkainenjavaikeasalasana' })
+  describe('When logged in', function () {
+    beforeEach(function () {
+      cy.login({
+        username: 'Tester',
+        password: 'hyvinmonimutkainenjavaikeasalasana',
+      })
     })
 
-    it('A blog can be created', function() {
+    it('A blog can be created', function () {
       cy.contains('new blog').click()
       cy.get('#title').type('Testiblogi')
       cy.get('#author').type('Testikirjoittaja')
@@ -45,7 +48,7 @@ describe('Blog app', function() {
       cy.contains('Testikirjoittaja')
     })
 
-    beforeEach(function() {
+    beforeEach(function () {
       cy.contains('new blog').click()
       cy.get('#title').type('Testiblogi')
       cy.get('#author').type('Testikirjoittaja')
@@ -55,17 +58,16 @@ describe('Blog app', function() {
       cy.contains('Testikirjoittaja')
     })
 
-    it('A blog can be liked', function() {
+    it('A blog can be liked', function () {
       cy.get('#info-button').click()
       cy.contains('like').click()
       cy.contains('likes: 1')
     })
 
-    it('User which added the blog can remove it', function() {
+    it('User which added the blog can remove it', function () {
       cy.get('#info-button').click()
       cy.contains('remove').click()
       cy.contains('Testiblogi deleted')
     })
   })
 })
-

@@ -10,7 +10,7 @@ const NewBlogForm = ({ createNewBlog }) => {
     createNewBlog({
       title: newTitle,
       author: newAuthor,
-      url: newUrl
+      url: newUrl,
     })
     setNewTitle('')
     setNewAuthor('')
@@ -18,7 +18,7 @@ const NewBlogForm = ({ createNewBlog }) => {
   }
 
   return (
-    <div data-testid='blog-form'>
+    <div data-testid="blog-form">
       <h2>create new</h2>
       <form onSubmit={addBlog}>
         <div>
@@ -51,7 +51,9 @@ const NewBlogForm = ({ createNewBlog }) => {
             id="url"
           />
         </div>
-        <button type="submit" id="create-button">create</button>
+        <button type="submit" id="create-button">
+          create
+        </button>
       </form>
     </div>
   )
