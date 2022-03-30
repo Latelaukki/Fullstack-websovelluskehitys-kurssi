@@ -39,10 +39,12 @@ const App = () => {
       .create(blogObject)
       .then((returnedBlog) => {
         setBlogs(blogs.concat(returnedBlog))
-        dispatch(setNotification(
-          `${returnedBlog.title} by ${returnedBlog.author} added`,
-          'success'
-        ))
+        dispatch(
+          setNotification(
+            `${returnedBlog.title} by ${returnedBlog.author} added`,
+            'success'
+          )
+        )
       })
       .catch((error) => {
         dispatch(setNotification(error.response.data.error, 'error'))
