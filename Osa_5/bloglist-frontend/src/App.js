@@ -2,6 +2,9 @@ import React, { useState, useEffect, useRef } from 'react'
 import blogService from './services/blogs'
 import loginService from './services/login'
 
+import { useDispatch } from 'react-redux'
+import { setNotification } from './reducers/notificationReducer'
+
 import LoginForm from './components/LoginForm'
 import Notification from './components/Notification'
 import BlogList from './components/BlogList'
@@ -13,8 +16,8 @@ const App = () => {
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [user, setUser] = useState(null)
-  const [message, setMessage] = useState(null)
 
+  const dispatch = useDispatch()
   const blogFormRef = useRef()
 
   useEffect(() => {
@@ -36,13 +39,13 @@ const App = () => {
       .create(blogObject)
       .then((returnedBlog) => {
         setBlogs(blogs.concat(returnedBlog))
-        handleNotification(
+        dispatch(setNotification(
           `${returnedBlog.title} by ${returnedBlog.author} added`,
           'success'
-        )
+        ))
       })
       .catch((error) => {
-        handleNotification(error.response.data.error, 'error')
+        dispatch(setNotification(error.response.data.error, 'error'))
       })
   }
 
@@ -55,7 +58,7 @@ const App = () => {
         setBlogs(blogs.map((blog) => (blog.id !== id ? blog : returnedBlog)))
       })
       .catch((error) => {
-        handleNotification(error.response.data.error, 'error')
+        dispatch(setNotification(error.response.data.error, 'error'))
       })
   }
 
@@ -70,10 +73,10 @@ const App = () => {
           setBlogs(
             blogs.filter((blog) => blog.id !== blogs.indexOf(returnedBlog))
           )
-          handleNotification(`${blogToDelete.title} deleted`, 'success')
+          dispatch(setNotification(`${blogToDelete.title} deleted`, 'success'))
         })
         .catch((error) => {
-          handleNotification(error.response.data.error, 'error')
+          dispatch(setNotification(error.response.data.error, 'error'))
         })
     }
   }
@@ -91,18 +94,9 @@ const App = () => {
       setUser(user)
       setUsername('')
       setPassword('')
-      console.log('4.')
-      console.log(user)
     } catch (exception) {
-      handleNotification('Wrong username or password', 'error')
+      dispatch(setNotification('Wrong username or password', 'error'))
     }
-  }
-
-  const handleNotification = (text, type) => {
-    setMessage({ text, type })
-    setTimeout(() => {
-      setMessage(null)
-    }, 3000)
   }
 
   const handleLogOut = () => {
@@ -114,7 +108,7 @@ const App = () => {
     return (
       <div>
         <h2>log in to application</h2>
-        <Notification message={message} />
+        <Notification />
         <LoginForm
           username={username}
           password={password}
@@ -128,7 +122,7 @@ const App = () => {
   return (
     <div>
       <h2>blogs</h2>
-      <Notification message={message} />
+      <Notification />
       {user.name} is logged in <button onClick={handleLogOut}>logout</button>
       <p />
       <Togglable label="new blog" ref={blogFormRef}>
