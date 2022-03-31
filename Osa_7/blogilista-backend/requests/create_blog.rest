@@ -1,9 +1,0 @@
-POST http://localhost:3003/api/blogs
-Content-Type: application/json
-
-{
-  "title": "Harry Potter 2",
-  "author": "Jk Rowling",
-  "url": "www.harrypotter.fi",
-  "likes": "123"
-}
