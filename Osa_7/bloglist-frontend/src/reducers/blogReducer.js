@@ -11,11 +11,23 @@ const blogSlice = createSlice ({
     },
     setBlogs(state, action) {
       return action.payload
+    },
+    addLike(state, action) {
+      const updatedBlog = action.payload
+      state = state.map(blog =>
+        blog.id !== updatedBlog.id ? blog : updatedBlog
+      )
+      return state
+    },
+    removeBlog(state, action) {
+      const removedBlog = action.payload
+      state = state.filter(blog => blog.id !== state.indexOf(removedBlog))
+      return state
     }
   }
 })
 
-export const { addBlog, setBlogs } = blogSlice.actions
+export const { addBlog, setBlogs, addLike, removeBlog } = blogSlice.actions
 
 export const initializeBlogs = () => {
   return async dispatch => {
@@ -29,12 +41,35 @@ export const createBlog = content => {
     try {
       const newBlog = await blogService.create(content)
       dispatch(addBlog(newBlog))
-      setNotification(
-        `${newBlog.title} by ${newBlog.author} added`,
-        'success'
-      )
+      dispatch(setNotification(`${newBlog.title} by ${newBlog.author} added`, 'success'))
     } catch(error) {
       dispatch(setNotification(error.response.data.error, 'error'))
+    }
+  }
+}
+
+export const likeBlog = blogObject => {
+  return async dispatch => {
+    try {
+      const changedBlog = { ...blogObject, likes: blogObject.likes + 1 }
+      const updatedBlog = await blogService.update(changedBlog.id, changedBlog)
+      dispatch(addLike(updatedBlog))
+    } catch(error) {
+      dispatch(setNotification(error.response.data.error, 'error'))
+    }
+  }
+}
+
+export const deleteBlog = blogObject => {
+  return async dispatch => {
+    if (window.confirm(`Remove ${blogObject.title} by ${blogObject.author}?`)) {
+      try {
+        const removedBlog = await blogService.remove(blogObject.id)
+        dispatch(removeBlog(removedBlog))
+        dispatch(setNotification(`${blogObject.title} deleted`, 'success'))
+      } catch(error) {
+        dispatch(setNotification(error.response.data.error, 'error'))
+      }
     }
   }
 }

@@ -1,8 +1,12 @@
 import React, { useState } from 'react'
+import { useDispatch } from 'react-redux'
+import { deleteBlog, likeBlog } from '../reducers/blogReducer'
 
-const Blog = ({ blog, createNewLike, removeBlog, user }) => {
+const Blog = ({ blog, user }) => {
   const [showInfo, setShowInfo] = useState(false)
   const [label, setLabel] = useState('view')
+
+  const dispatch = useDispatch()
 
   const blogStyle = {
     paddingTop: 10,
@@ -21,14 +25,12 @@ const Blog = ({ blog, createNewLike, removeBlog, user }) => {
     label === 'hide' ? setLabel('view') : setLabel('hide')
   }
 
-  const addLike = () => {
-    createNewLike({
-      userId: blog.user.id,
-      title: blog.title,
-      author: blog.author,
-      url: blog.url,
-      likes: blog.likes + 1,
-    })
+  const addLike = blog => {
+    dispatch(likeBlog(blog))
+  }
+
+  const removeBlog = blog => {
+    dispatch(deleteBlog(blog))
   }
 
   return (
@@ -41,11 +43,11 @@ const Blog = ({ blog, createNewLike, removeBlog, user }) => {
         <div>
           {blog.url}
           <br />
-          likes: {blog.likes} <button onClick={() => addLike()}>like</button>
+          likes: {blog.likes} <button onClick={() => addLike(blog)}>like</button>
           <br />
           {blog.user.name}
           <br />
-          <button onClick={removeBlog} value={blog.title} style={showIfUser}>
+          <button onClick={() => removeBlog(blog)} value={blog.title} style={showIfUser}>
             remove
           </button>
         </div>

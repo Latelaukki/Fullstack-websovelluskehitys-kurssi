@@ -34,20 +34,6 @@ const App = () => {
     }
   }, [])
 
-
-  /*   const createNewLike = (blogObject) => {
-    const blogToUpdate = blogs.find((blog) => blog.title === blogObject.title)
-    const id = blogToUpdate.id
-    blogService
-      .update(id, blogObject)
-      .then((returnedBlog) => {
-        setBlogs(blogs.map((blog) => (blog.id !== id ? blog : returnedBlog)))
-      })
-      .catch((error) => {
-        dispatch(setNotification(error.response.data.error, 'error'))
-      })
-  } */
-
   /*   const removeBlog = (event) => {
     const blogToDelete = blogs.find((blog) => blog.title === event.target.value)
     if (
