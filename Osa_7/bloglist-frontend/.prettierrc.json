@@ -1,7 +1,4 @@
 {
   "singleQuote": true,
-  "semi": false,
-  "[javascript]": {
-    "editor.formatOnSave": true
-  }
+  "semi": false
 }
