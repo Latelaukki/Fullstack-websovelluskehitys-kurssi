@@ -10,6 +10,8 @@ import Togglable from './components/Togglable'
 import { initializeBlogs } from './reducers/blogReducer'
 import { setLoggedUser } from './reducers/userReducer'
 import { handleLogOut } from './reducers/userReducer'
+import UsersList from './components/UsersList'
+import { initializeUsers } from './reducers/usersReducer'
 
 const App = () => {
   const dispatch = useDispatch()
@@ -23,6 +25,10 @@ const App = () => {
 
   useEffect(() => {
     dispatch(setLoggedUser())
+  }, [dispatch])
+
+  useEffect(() => {
+    dispatch(initializeUsers())
   }, [dispatch])
 
   const logOut = () => {
@@ -49,6 +55,7 @@ const App = () => {
       </Togglable>
       <p />
       <BlogList user={user} />
+      <UsersList />
     </div>
   )
 }

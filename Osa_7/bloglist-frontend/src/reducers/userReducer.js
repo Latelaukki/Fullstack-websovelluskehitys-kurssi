@@ -48,7 +48,6 @@ export const handleLogin = (userObject) => {
 
 export const handleLogOut = () => {
   return (dispatch) => {
-    console.log('vittu')
     window.localStorage.removeItem('loggedBlogAppUser')
     dispatch(logOut())
   }
