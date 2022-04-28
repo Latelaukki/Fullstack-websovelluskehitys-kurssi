@@ -13,11 +13,11 @@ const UsersList = () => {
             <th></th>
             <th>blogs created</th>
           </tr>
-          <tr>
-            {users.map((user) => (
-              <User key={user.id} user={user} />
-            ))}
-          </tr>
+          {users.map((user) => (
+            <tr key={user.id}>
+              <User user={user} />
+            </tr>
+          ))}
         </tbody>
       </table>
     </div>
