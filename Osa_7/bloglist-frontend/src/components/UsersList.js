@@ -1,5 +1,5 @@
 import { useSelector } from 'react-redux'
-import User from './User'
+import UserData from './UserData'
 
 const UsersList = () => {
   const users = useSelector((state) => state.users)
@@ -15,7 +15,7 @@ const UsersList = () => {
           </tr>
           {users.map((user) => (
             <tr key={user.id}>
-              <User user={user} />
+              <UserData user={user} />
             </tr>
           ))}
         </tbody>

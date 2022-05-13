@@ -1,18 +1,28 @@
 import { useSelector } from 'react-redux'
+import { useParams } from 'react-router-dom'
 
-const User = ({ user }) => {
+const User = () => {
+  const users = useSelector((state) => state.users)
+  const id = useParams().id
+  const user = users.find((user) => user.id === id)
+
+  const blogs = useSelector((state) => state.blogs)
+  const userBlogs = blogs.filter((blog) => blog.user.id === id)
+
   if (!user) {
     return null
   }
-  let count = 0
-  const blogs = useSelector((state) => state.blogs)
-  blogs.forEach((blog) => (blog.user.id === user.id ? (count += 1) : count))
 
   return (
-    <>
-      <td>{user.name}</td>
-      <td>{count}</td>
-    </>
+    <div>
+      <h1>{user.name}</h1>
+      <p />
+      <h2>added blogs</h2>
+      {userBlogs.map((blog) => (
+        <li key={blog.id}>{blog.title}</li>
+      ))}
+    </div>
   )
 }
+
 export default User
