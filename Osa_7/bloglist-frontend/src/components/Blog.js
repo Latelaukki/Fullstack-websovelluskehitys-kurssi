@@ -1,57 +1,50 @@
-import React, { useState } from 'react'
-import { useDispatch } from 'react-redux'
+import { useSelector, useDispatch } from 'react-redux'
+import { useParams } from 'react-router-dom'
 import { deleteBlog, likeBlog } from '../reducers/blogReducer'
 
-const Blog = ({ blog, user }) => {
-  const [showInfo, setShowInfo] = useState(false)
-  const [label, setLabel] = useState('view')
-
+const Blog = () => {
   const dispatch = useDispatch()
 
-  const blogStyle = {
-    paddingTop: 10,
-    paddingLeft: 2,
-    border: 'solid',
-    borderWidth: 1,
-    marginBottom: 5,
+  const blogs = useSelector((state) => state.blogs)
+  const id = useParams().id
+  const blog = blogs.find((blog) => blog.id === id)
+  const user = useSelector((state) => state.user)
+
+  if (!blog) {
+    return null
   }
 
   const showIfUser = {
     display: user.username === blog.user.username ? '' : 'none',
   }
 
-  const changeView = () => {
-    setShowInfo(!showInfo)
-    label === 'hide' ? setLabel('view') : setLabel('hide')
-  }
-
-  const addLike = blog => {
+  const addLike = (blog) => {
     dispatch(likeBlog(blog))
   }
 
-  const removeBlog = blog => {
+  const removeBlog = (blog) => {
     dispatch(deleteBlog(blog))
   }
 
   return (
-    <div style={blogStyle} data-testid="blog">
-      {blog.title} {blog.author}
-      <button onClick={changeView} id="info-button">
-        {label}
+    <div>
+      <h1>
+        {blog.title} {blog.author}
+      </h1>
+      <p />
+      <a href={`${blog.url}`}>{blog.url}</a>
+      <br />
+      {blog.likes} likes <button onClick={() => addLike(blog)}>like</button>
+      <br />
+      added by {blog.user.name}
+      <br />
+      <button
+        onClick={() => removeBlog(blog)}
+        value={blog.title}
+        style={showIfUser}
+      >
+        remove
       </button>
-      {showInfo && (
-        <div>
-          {blog.url}
-          <br />
-          likes: {blog.likes} <button onClick={() => addLike(blog)}>like</button>
-          <br />
-          {blog.user.name}
-          <br />
-          <button onClick={() => removeBlog(blog)} value={blog.title} style={showIfUser}>
-            remove
-          </button>
-        </div>
-      )}
     </div>
   )
 }
