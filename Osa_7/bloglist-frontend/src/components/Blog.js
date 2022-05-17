@@ -45,6 +45,10 @@ const Blog = () => {
       >
         remove
       </button>
+      <h2>comments</h2>
+      {blog.comments.map((comment) => (
+        <li key={comment.id}>{comment.content}</li>
+      ))}
     </div>
   )
 }
