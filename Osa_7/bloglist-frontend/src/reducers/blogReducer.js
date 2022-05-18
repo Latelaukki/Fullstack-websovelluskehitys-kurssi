@@ -2,7 +2,7 @@ import { createSlice } from '@reduxjs/toolkit'
 import blogService from '../services/blogs'
 import { setNotification } from './notificationReducer'
 
-const blogSlice = createSlice ({
+const blogSlice = createSlice({
   name: 'blogs',
   initialState: [],
   reducers: {
@@ -12,62 +12,81 @@ const blogSlice = createSlice ({
     setBlogs(state, action) {
       return action.payload
     },
-    addLike(state, action) {
+    updateBlog(state, action) {
       const updatedBlog = action.payload
-      state = state.map(blog =>
+      state = state.map((blog) =>
         blog.id !== updatedBlog.id ? blog : updatedBlog
       )
       return state
     },
     removeBlog(state, action) {
       const removedBlog = action.payload
-      state = state.filter(blog => blog.id !== state.indexOf(removedBlog))
+      state = state.filter((blog) => blog.id !== state.indexOf(removedBlog))
       return state
-    }
-  }
+    },
+  },
 })
 
-export const { addBlog, setBlogs, addLike, removeBlog } = blogSlice.actions
+export const { addBlog, setBlogs, updateBlog, removeBlog } = blogSlice.actions
 
 export const initializeBlogs = () => {
-  return async dispatch => {
+  return async (dispatch) => {
     const blogs = await blogService.getAll()
     dispatch(setBlogs(blogs))
   }
 }
 
-export const createBlog = content => {
-  return async dispatch => {
+export const createBlog = (content) => {
+  return async (dispatch) => {
     try {
       const newBlog = await blogService.create(content)
       dispatch(addBlog(newBlog))
-      dispatch(setNotification(`${newBlog.title} by ${newBlog.author} added`, 'success'))
-    } catch(error) {
+      dispatch(
+        setNotification(
+          `${newBlog.title} by ${newBlog.author} added`,
+          'success'
+        )
+      )
+    } catch (error) {
       dispatch(setNotification(error.response.data.error, 'error'))
     }
   }
 }
 
-export const likeBlog = blogObject => {
-  return async dispatch => {
+export const likeBlog = (blogObject) => {
+  return async (dispatch) => {
     try {
       const changedBlog = { ...blogObject, likes: blogObject.likes + 1 }
       const updatedBlog = await blogService.update(changedBlog.id, changedBlog)
-      dispatch(addLike(updatedBlog))
-    } catch(error) {
+      dispatch(updateBlog(updatedBlog))
+    } catch (error) {
       dispatch(setNotification(error.response.data.error, 'error'))
     }
   }
 }
 
-export const deleteBlog = blogObject => {
-  return async dispatch => {
+export const handleAddComment = (blogObject, commentObject) => {
+  return async (dispatch) => {
+    try {
+      const changedBlog = await blogService.createComment(
+        blogObject.id,
+        commentObject
+      )
+      dispatch(updateBlog(changedBlog))
+    } catch (error) {
+      dispatch(setNotification(error.response.data.error, 'error'))
+    }
+  }
+}
+
+export const deleteBlog = (blogObject) => {
+  return async (dispatch) => {
     if (window.confirm(`Remove ${blogObject.title} by ${blogObject.author}?`)) {
       try {
         const removedBlog = await blogService.remove(blogObject.id)
         dispatch(removeBlog(removedBlog))
         dispatch(setNotification(`${blogObject.title} deleted`, 'success'))
-      } catch(error) {
+      } catch (error) {
         dispatch(setNotification(error.response.data.error, 'error'))
       }
     }
