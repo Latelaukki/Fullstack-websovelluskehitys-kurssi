@@ -6,6 +6,8 @@ import { initializeBlogs } from './reducers/blogReducer'
 import { setLoggedUser } from './reducers/userReducer'
 import { initializeUsers } from './reducers/usersReducer'
 
+import { Container, Typography } from '@mui/material'
+
 import LoginForm from './components/LoginForm'
 import Notification from './components/Notification'
 import Footer from './components/Footer'
@@ -33,15 +35,15 @@ const App = () => {
 
   if (user === null) {
     return (
-      <div>
-        <h2>log in to application</h2>
+      <Container>
+        <Typography variant="h3">Log in to application</Typography>
         <Notification />
         <LoginForm />
-      </div>
+      </Container>
     )
   }
   return (
-    <>
+    <Container>
       <Footer />
       <Routes>
         <Route path="/blogs/" element={<BlogList />} />
@@ -50,7 +52,7 @@ const App = () => {
         <Route path="/users/:id" element={<User />} />
         <Route path="/" element={<BlogList />} />
       </Routes>
-    </>
+    </Container>
   )
 }
 

@@ -1,4 +1,13 @@
 import { useSelector } from 'react-redux'
+import {
+  Typography,
+  TableContainer,
+  Table,
+  TableRow,
+  TableCell,
+  TableBody,
+  Paper,
+} from '@mui/material'
 import UserData from './UserData'
 
 const UsersList = () => {
@@ -6,20 +15,22 @@ const UsersList = () => {
 
   return (
     <div>
-      <h2>Users</h2>
-      <table>
-        <tbody>
-          <tr>
-            <th></th>
-            <th>blogs created</th>
-          </tr>
-          {users.map((user) => (
-            <tr key={user.id}>
-              <UserData user={user} />
-            </tr>
-          ))}
-        </tbody>
-      </table>
+      <Typography variant="h4">Users</Typography>
+      <TableContainer component={Paper}>
+        <Table>
+          <TableBody>
+            <TableRow>
+              <TableCell align="left"></TableCell>
+              <TableCell align="center">Blogs created</TableCell>
+            </TableRow>
+            {users.map((user) => (
+              <TableRow key={user.id}>
+                <UserData user={user} />
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </TableContainer>
     </div>
   )
 }

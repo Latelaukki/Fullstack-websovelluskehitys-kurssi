@@ -1,11 +1,10 @@
 import Notification from './Notification'
-import Navigation from './Navigation'
+import Navbar from './Navbar'
 
 const Footer = () => {
   return (
     <div>
-      <Navigation />
-      <h2>Blogs</h2>
+      <Navbar />
       <Notification />
     </div>
   )

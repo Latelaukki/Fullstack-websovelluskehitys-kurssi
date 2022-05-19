@@ -1,5 +1,6 @@
 import { useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
+import { TableCell } from '@mui/material'
 
 const UserData = ({ user }) => {
   if (!user) {
@@ -11,10 +12,10 @@ const UserData = ({ user }) => {
 
   return (
     <>
-      <td>
+      <TableCell align="left" data-testid="blog">
         <Link to={`/users/${user.id}`}>{user.name}</Link>
-      </td>
-      <td>{count}</td>
+      </TableCell>
+      <TableCell align="center">{count}</TableCell>
     </>
   )
 }
