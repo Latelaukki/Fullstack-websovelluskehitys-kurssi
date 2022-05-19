@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useParams } from 'react-router-dom'
+import { Button, TextField } from '@mui/material'
 
 import { handleAddComment } from '../reducers/blogReducer'
 
@@ -26,16 +27,18 @@ const CommentForm = () => {
     <form onSubmit={addComment}>
       <div>
         <p />
-        <input
+        <TextField
+          label="write a comment..."
           id="content"
           type="text"
           value={content}
           name="Content"
           onChange={({ target }) => setContent(target.value)}
+          size="small"
         />
-        <button type="submit" id="comment-button">
+        <Button variant="contained" type="submit" id="comment-button">
           add comment
-        </button>
+        </Button>
       </div>
     </form>
   )

@@ -1,5 +1,6 @@
 import { useSelector, useDispatch } from 'react-redux'
 import { useParams } from 'react-router-dom'
+import { Typography, Button } from '@mui/material'
 
 import { deleteBlog, likeBlog } from '../reducers/blogReducer'
 import CommentForm from './CommentForm'
@@ -30,25 +31,38 @@ const Blog = () => {
 
   return (
     <div>
-      <h1>
-        {blog.title} {blog.author}
-      </h1>
+      <Typography variant="h5">
+        {blog.title} by {blog.author}
+      </Typography>
       <p />
-      <a href={`${blog.url}`}>{blog.url}</a>
+      <Typography variant="h6">
+        <a href={`${blog.url}`}>{blog.url}</a>
+      </Typography>
+      <Typography variant="string">
+        {blog.likes} likes{' '}
+        <Button
+          variant="contained"
+          size="small"
+          sx={{ my: 2 }}
+          onClick={() => addLike(blog)}
+        >
+          like
+        </Button>
+      </Typography>
+      <Typography variant="h6">added by {blog.user.name}</Typography>
       <br />
-      {blog.likes} likes <button onClick={() => addLike(blog)}>like</button>
-      <br />
-      added by {blog.user.name}
-      <br />
-      <button
+      <Button
+        variant="outlined"
         onClick={() => removeBlog(blog)}
         value={blog.title}
         style={showIfUser}
       >
         remove
-      </button>
+      </Button>
       <CommentForm />
-      <h2>comments</h2>
+      <Typography variant="h6" sx={{ my: 2 }}>
+        Comments
+      </Typography>
       {blog.comments.map((comment) => (
         <li key={comment.id}>{comment.content}</li>
       ))}
