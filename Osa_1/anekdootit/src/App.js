@@ -1,16 +1,15 @@
 import { useState } from 'react'
 
-const Button = ({handleClick, text}) => (
+const Button = ({ handleClick, text }) => (
   <button onClick={handleClick}>{text}</button>
 )
 
-const Anecdote = ({anecdote, points}) => (
+const Anecdote = ({ anecdote, points }) => (
   <div>
-    {anecdote} <br/>
+    {anecdote} <br />
     has {points} votes
   </div>
 )
-
 
 const App = () => {
   const anecdotes = [
@@ -20,43 +19,37 @@ const App = () => {
     'Any fool can write code that a computer can understand. Good programmers write code that humans can understand.',
     'Premature optimization is the root of all evil.',
     'Debugging is twice as hard as writing the code in the first place. Therefore, if you write the code as cleverly as possible, you are, by definition, not smart enough to debug it.',
-    'Programming without an extremely heavy use of console.log is same as if a doctor would refuse to use x-rays or blood tests when dianosing patients.'
+    'Programming without an extremely heavy use of console.log is same as if a doctor would refuse to use x-rays or blood tests when dianosing patients.',
   ]
-  
-  const [points, setPoints] = useState([0, 0, 0, 0, 0, 0, 0])
+
+  const [points, setPoints] = useState(new Array(anecdotes.length).fill(0))
   const [selected, setSelected] = useState(0)
   const [mostVotesIndex, setMostVotesIndex] = useState(0)
 
   const handleSelection = () => {
-    let randomIndex = Math.floor(Math.random() * 7) 
+    const randomIndex = Math.floor(Math.random() * 7)
     setSelected(randomIndex)
   }
 
   const handleVote = () => {
     const copy = [...points]
-    copy[selected] += 1    
+    copy[selected] += 1
+    const max_index = copy.indexOf(Math.max(...copy))
+    setMostVotesIndex(max_index)
     setPoints(copy)
-    let most = 0
-    for (let i = 0; i < points.length; i++) {
-      console.log("i:", i, "points:", points[i])
-      if (points[i] > most) {
-       // console.log("points: ", points[i])
-        console.log("most:", most)
-        most = points[i]
-        setMostVotesIndex(i)
-      //  console.log("index: ",i)
-      }
-    }
   }
-      
+
   return (
     <div>
       <h1>Anecdote of the day</h1>
       <Anecdote anecdote={anecdotes[selected]} points={points[selected]} />
-      <Button handleClick={() => handleVote()} text="vote"/>
-      <Button handleClick={handleSelection} text="new anecdote"/>
+      <Button handleClick={handleVote} text='vote' />
+      <Button handleClick={handleSelection} text='new anecdote' />
       <h1>Anecdote with most votes</h1>
-      <Anecdote anecdote={anecdotes[mostVotesIndex]} points={points[mostVotesIndex]} />
+      <Anecdote
+        anecdote={anecdotes[mostVotesIndex]}
+        points={points[mostVotesIndex]}
+      />
     </div>
   )
 }
