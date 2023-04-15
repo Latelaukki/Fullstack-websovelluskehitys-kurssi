@@ -110,6 +110,7 @@ const typeDefs = `
       published: Int!
       genres: [String]!  
     ): Book
+    editAuthor(name: String!, setBornTo: Int!): Author
   }
 `
 
@@ -132,7 +133,7 @@ const resolvers = {
       return filteredBooks
     },
     allAuthors: () => {
-      const authorList2 = authors.reduce((authors, currentAuthor) => {
+      const authorList = authors.reduce((authors, currentAuthor) => {
         const author = {
           name: currentAuthor.name,
           bookCount: books.filter((b) => b.author === currentAuthor.name)
@@ -142,19 +143,7 @@ const resolvers = {
         authors = authors.concat(author)
         return authors
       }, [])
-      /* 
-      const names = authors.map((a) => a.name)
-      const authorList = names.reduce((authors, currentAuthor) => {
-        filteredBooks = books.filter((b) => b.author === currentAuthor)
-        const author = {
-          name: currentAuthor,
-          bookCount: filteredBooks.length,
-          born: 
-        }
-        authors = authors.concat(author)
-        return authors
-      }, []) */
-      return authorList2
+      return authorList
     },
     bookCount: () => books.length,
     authorCount: () => {
@@ -167,7 +156,6 @@ const resolvers = {
     addBook: (root, args) => {
       const book = { ...args, id: uuid() }
       const names = authors.map((a) => a.name)
-      console.log(args.author)
       if (!names.includes(args.author)) {
         const author = {
           name: args.author,
@@ -177,6 +165,20 @@ const resolvers = {
       }
       books = books.concat(book)
       return book
+    },
+    editAuthor: (root, args) => {
+      const names = authors.map((a) => a.name)
+      if (!names.includes(args.name)) {
+        return null
+      }
+      authors = authors.map((a) => {
+        if (a.name === args.name) {
+          return { ...a, name: args.name, born: args.setBornTo }
+        }
+        return a
+      })
+      const authorToUpdate = authors.find((a) => a.name === args.name)
+      return authorToUpdate
     },
   },
 }
