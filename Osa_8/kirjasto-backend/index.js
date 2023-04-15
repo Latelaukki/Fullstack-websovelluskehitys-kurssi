@@ -91,7 +91,8 @@ const typeDefs = `
 
   type Author {
     name: String!
-    bookCount: Int!
+    bookCount: Int
+    born: String
     id: ID!
   }
 
@@ -131,10 +132,11 @@ const resolvers = {
       return filteredBooks
     },
     allAuthors: () => {
-      let authorList2 = authors.reduce((authors, currentAuthor) => {
+      const authorList2 = authors.reduce((authors, currentAuthor) => {
         const author = {
           name: currentAuthor.name,
-          bookCount: books.filter((b) => b.author === currentAuthor.name),
+          bookCount: books.filter((b) => b.author === currentAuthor.name)
+            .length,
           born: currentAuthor.born,
         }
         authors = authors.concat(author)
@@ -164,12 +166,11 @@ const resolvers = {
   Mutation: {
     addBook: (root, args) => {
       const book = { ...args, id: uuid() }
-      const names = authors.map((a) => a.names)
-
-      if (!names.includes(args.name)) {
+      const names = authors.map((a) => a.name)
+      console.log(args.author)
+      if (!names.includes(args.author)) {
         const author = {
-          name: currentAuthor,
-          bookCount: 1,
+          name: args.author,
           born: null,
         }
         authors = authors.concat(author)
