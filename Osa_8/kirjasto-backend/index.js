@@ -80,7 +80,6 @@ let books = [
   },
 ]
 
-//typedefs
 const typeDefs = `
   type Book {
     title: String!
