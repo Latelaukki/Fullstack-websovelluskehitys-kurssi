@@ -3,12 +3,11 @@ const Books = (props) => {
     return null
   }
 
-  const books = []
+  const books = props.books
 
   return (
     <div>
       <h2>books</h2>
-
       <table>
         <tbody>
           <tr>
