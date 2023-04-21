@@ -1,1 +1,2 @@
-Viimeisin: 8.5
+born -> setBornTo
+Rikkooko frontin?

@@ -52,6 +52,7 @@ const Authors = (props) => {
         <div>
           born
           <input
+            type="number"
             value={born}
             onChange={({ target }) => setBorn(target.value)}
           />
