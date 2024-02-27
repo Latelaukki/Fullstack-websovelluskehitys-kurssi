@@ -58,7 +58,7 @@ const typeDefs = `
 const resolvers = {
   Query: {
     allBooks: async (root, args) => {
-      return Book.find({})
+      return Book.find({genres: args.genre })
     },
     allAuthors: async () => {
       return Author.find({})
