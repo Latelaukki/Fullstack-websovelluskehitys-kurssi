@@ -77,15 +77,16 @@ const resolvers = {
     addBook: async (root, args) => {
       let author = await Author.findOne({ name: args.author })
       if (!author) {
-        author = new Author({ name: args.author })
+        author = new Author({ name: args.author, born: null})
         await author.save()
       }
       const book = new Book({ ...args , author: author})
       return book.save()
     },
     editAuthor: async (root, args) => {
+      console.log(args)
       const author = await Author.findOne({ name: args.name })
-      author.born = args.born
+      author.born = args.setBornTo
       return author.save()
     }
   },
