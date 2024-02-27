@@ -67,10 +67,15 @@ const resolvers = {
   },
   Book: {
     author: async (root) => {
-      console.log(root)
       return {
         name: root.author.name
       }
+    }
+  },
+  Author: {
+    bookCount: async (root, args) => {
+      let books = await Book.find({author: root.id})
+      return books.length
     }
   },
   Mutation: {
