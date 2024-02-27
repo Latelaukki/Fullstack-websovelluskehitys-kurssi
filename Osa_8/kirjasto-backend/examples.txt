@@ -1,0 +1,13 @@
+mutation {
+  addBook(
+    title: "NoSQL Distilled2",
+    author: "Martin Fowler2"
+    published: 2012,
+    genres: ["database", "nosql"]
+  ) {
+    title,
+    author {
+      name
+    }
+  }
+}
