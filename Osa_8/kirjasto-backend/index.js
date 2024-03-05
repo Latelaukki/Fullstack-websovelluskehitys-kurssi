@@ -81,7 +81,10 @@ const typeDefs = `
 const resolvers = {
   Query: {
     allBooks: async (root, args) => {
-      return Book.find({genres: args.genre })
+      if (!args.genre) {
+        return Book.find({}).populate('author')
+      }
+      return Book.find({ genres: args.genre }).populate('author')
     },
     allAuthors: async () => {
       return Author.find({})
@@ -91,18 +94,10 @@ const resolvers = {
       return context.currentUser
     }
   },
-  Book: {
-    author: async (root) => {
-      return {
-        name: root.author.name
-      }
-    }
-  },
   Author: {
     bookCount: async (root, args) => {
-      let books = await Book.find({author: root.id})
-      return books.length
-    }
+      return Book.find({ author: root }).count()
+    },
   },
   Mutation: {
     addBook: async (root, args) => {
