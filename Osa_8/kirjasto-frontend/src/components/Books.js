@@ -1,10 +1,8 @@
-const Books = (props) => {
-  console.log(props)
-  if (!props.show) {
+const Books = ({show, books}) => {
+
+  if (!show) {
     return null
   }
-
-  const books = props.books
 
   return (
     <div>
