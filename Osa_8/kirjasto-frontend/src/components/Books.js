@@ -1,4 +1,13 @@
+import { useState } from 'react'
+
 const Books = ({show, books}) => {
+  const [genre, setGenre] = useState('ALL')
+
+  const genres = books.flatMap((b) => [...new Set(b.genres)]).filter((genre) => genre.length > 0);
+
+  if (genre !== 'ALL') {
+    books = books.filter(b => b.genres.includes(genre))
+  }
 
   if (!show) {
     return null
@@ -7,6 +16,9 @@ const Books = ({show, books}) => {
   return (
     <div>
       <h2>books</h2>
+      {genre !== 'ALL' &&
+        <>in genre <b>{genre}</b></>
+      }
       <table>
         <tbody>
           <tr>
@@ -23,6 +35,12 @@ const Books = ({show, books}) => {
           ))}
         </tbody>
       </table>
+      {genres.map((g) => (
+            <button key={g}
+            value={g}
+            onClick={({ target }) => setGenre(target.value)}>{g}</button> 
+          ))}
+        <button onClick={() => setGenre('ALL')}>all genres</button>
     </div>
   )
 }
