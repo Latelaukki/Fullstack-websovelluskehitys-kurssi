@@ -25,7 +25,7 @@ const NewBook = ({show, setErrorMessage, setPage}) => {
 
   const submit = async (event) => {
     event.preventDefault()
-    createBook({ variables: { title, author, published, genres } })
+    createBook({ variables: { title, author, published: parseInt(published, 10), genres } })
 
     setPage('books')
     setTitle('')
@@ -66,7 +66,7 @@ const NewBook = ({show, setErrorMessage, setPage}) => {
           published
           <input
             value={published}
-            onChange={({ target }) => setPublished(parseInt(target.value, 10))}
+            onChange={({ target }) => setPublished(target.value)}
           />
         </div>
         <div>

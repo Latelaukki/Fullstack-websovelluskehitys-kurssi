@@ -3,12 +3,14 @@ import Notify from './components/Notify'
 import Authors from './components/Authors'
 import Books from './components/Books'
 import NewBook from './components/NewBook'
+import Recommend from './components/Recommend'
 import LoginForm from './components/LoginForm'
 
 import { useApolloClient } from '@apollo/client'
 import { useQuery } from '@apollo/client'
 import { ALL_AUTHORS } from "./queries"
 import { ALL_BOOKS } from "./queries"
+import { ME } from "./queries"
 
 
 const App = () => {
@@ -30,6 +32,11 @@ const App = () => {
   const bookResult = useQuery(ALL_BOOKS, {
     pollInterval: 2000
   })
+
+  const meResult = useQuery(ME,  {
+    pollInterval: 2000
+  })
+
   if (authorResult.loading)  {
     return <div>loading...</div>
   }
@@ -46,7 +53,8 @@ const App = () => {
         <button onClick={() => setPage('books')}>books</button>
         {token ?
         <>
-          <button onClick={() => setPage('add')}>add</button>
+          <button onClick={() => setPage('add')}>add book</button>
+          <button onClick={() => setPage('recommend')}>recommend</button>
           <button onClick={logout}>logout</button>
         </>
         : <button onClick={() => setPage('login')}>login</button>}
@@ -59,6 +67,8 @@ const App = () => {
       <NewBook show={page === 'add' && token} 
         setErrorMessage = {setErrorMessage}
         setPage={setPage}/>
+
+      <Recommend show={page === 'recommend' && token} books = {bookResult.data.allBooks} genre = {meResult.data.me.favoriteGenre}/>
 
       <LoginForm show={page === 'login'}
         setToken = {setToken}
