@@ -1,6 +1,15 @@
-const Recommend = ({show, books, genre}) => {
-  
-    books = books.filter(b => b.genres.includes(genre))
+import { useQuery } from '@apollo/client'
+import { ALL_BOOKS } from "../queries"
+
+const Recommend = ({ show, genre }) => {
+    const { loading, error, data } =  useQuery(ALL_BOOKS, {
+      variables: { genre },
+    })
+
+    if (loading) return <div>loading...</div>
+    if (error) return `Error! ${error}`
+
+    const books = data.allBooks
 
     if (!show) {
       return null

@@ -84,6 +84,7 @@ const resolvers = {
       if (!args.genre) {
         return Book.find({}).populate('author')
       }
+      console.log(args.genre)
       return Book.find({ genres: args.genre }).populate('author')
     },
     allAuthors: async () => {

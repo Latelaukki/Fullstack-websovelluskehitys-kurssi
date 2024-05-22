@@ -12,7 +12,6 @@ import { ALL_AUTHORS } from "./queries"
 import { ALL_BOOKS } from "./queries"
 import { ME } from "./queries"
 
-
 const App = () => {
   const [token, setToken] = useState(null)
   const [page, setPage] = useState('authors')
@@ -25,17 +24,9 @@ const App = () => {
     client.resetStore()
   }
 
-  const authorResult = useQuery(ALL_AUTHORS, {
-    pollInterval: 2000
-  })
-
-  const bookResult = useQuery(ALL_BOOKS, {
-    pollInterval: 2000
-  })
-
-  const meResult = useQuery(ME,  {
-    pollInterval: 2000
-  })
+  const authorResult = useQuery(ALL_AUTHORS)
+  const bookResult = useQuery(ALL_BOOKS)
+  const meResult = useQuery(ME)
 
   if (authorResult.loading)  {
     return <div>loading...</div>
@@ -68,7 +59,7 @@ const App = () => {
         setErrorMessage = {setErrorMessage}
         setPage={setPage}/>
 
-      <Recommend show={page === 'recommend' && token} books = {bookResult.data.allBooks} genre = {meResult.data.me.favoriteGenre}/>
+      <Recommend show={page === 'recommend' && token} genre = {meResult.data.me.favoriteGenre}/>
 
       <LoginForm show={page === 'login'}
         setToken = {setToken}

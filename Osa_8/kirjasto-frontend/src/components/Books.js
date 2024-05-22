@@ -35,10 +35,10 @@ const Books = ({show, books}) => {
           ))}
         </tbody>
       </table>
-      {genres.map((g) => (
-            <button key={g}
-            value={g}
-            onClick={({ target }) => setGenre(target.value)}>{g}</button> 
+      {genres.map((genre) => (
+            <button key={genre}
+            value={genre}
+            onClick={({ target }) => setGenre(target.value)}>{genre}</button> 
           ))}
         <button onClick={() => setGenre('ALL')}>all genres</button>
     </div>
