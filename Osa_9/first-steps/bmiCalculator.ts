@@ -11,11 +11,11 @@ const parseArguments = (args: string[]): bmiArgs => {
         return {
           height: Number(args[2]),
           weight: Number(args[3])
-        }
+        };
       } else {
         throw new Error('Height and weight must be numbers.');
       }
-}
+};
 
 export const calculateBmi = (height: number, weight: number): string => {
     const bmi = weight / ((height / 100) ** 2);
@@ -45,14 +45,14 @@ export const calculateBmi = (height: number, weight: number): string => {
         return('Obese (Class III)');
     }
     return('Incorrect height and/or weight');
-}
+};
 
 if (require.main === module) {
     try {
         const { height, weight } = parseArguments(process.argv);
         console.log(calculateBmi(height, weight));
     } catch (error: unknown) {
-        let errorMessage = 'Something went wrong.'
+        let errorMessage = 'Something went wrong.';
         if (error instanceof Error) {
         errorMessage += ' Error: ' + error.message;
         }
