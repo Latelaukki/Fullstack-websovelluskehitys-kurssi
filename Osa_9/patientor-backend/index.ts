@@ -1,11 +1,19 @@
 import express from 'express';
 
 const app = express();
+const cors = require('cors')
+
 app.use(express.json());
+app.use(cors())
 
-const PORT = 3000;
+const corsOptions = {
+    origin: 'http://localhost:5173',
+    optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204
+  }
 
-app.get('/api/ping', (_req, res) => {
+const PORT = 3001;
+
+app.get('/api/ping', cors(corsOptions), (_req, res) => {
   console.log('someone pinged here');
   res.send('pong');
 });
